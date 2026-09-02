@@ -1,0 +1,11 @@
+{
+	"id": "jira-compass-plugin",
+	"name": "Jira Task Management",
+	"version": "1.0.0",
+	"minAppVersion": "1.0.0",
+	"description": "Plugin for managing incoming Jira tasks on compass plus domain",
+	"author": "kshemyakin",
+	"authorUrl": "",
+	"fundingUrl": "",
+	"isDesktopOnly": false
+}
