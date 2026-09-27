@@ -21,6 +21,7 @@ import JTMPlugin from './main';
 import {
     TaskInfo
 } from './main';
+import { JTMSettings } from './settings';
 
 export class CreateTaskModal extends Modal {
 	plugin: JTMPlugin;
@@ -235,5 +236,26 @@ class DatesPickerComponent extends BaseComponent{
 		});
 
 		return this;
+	}
+}
+
+export class ProjectColorModal extends Modal {
+	settings: JTMSettings;
+	colorElem: Setting;
+
+	constructor(plugin: JTMPlugin) {
+		super(plugin.app);
+		this.settings = plugin.settings;
+
+		this.setTitle("Project colors");
+
+		this.colorElem = new Setting(this.containerEl)
+			.setName("Color")
+			.setDesc("Popo")
+			.addColorPicker((color) => {
+				color.onChange((newColor) => {
+					this.colorElem.setDesc(newColor);
+				});
+			});
 	}
 }

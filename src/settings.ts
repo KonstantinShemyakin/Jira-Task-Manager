@@ -1,5 +1,6 @@
 import { App, PluginSettingTab, Setting } from 'obsidian';
 import JTMPlugin from './main';
+import { ProjectColorModal } from './modal';
 
 export interface JTMSettings {
 	mwTaskCalendarFile: string;
@@ -95,6 +96,16 @@ export class JTMSetingsTab extends PluginSettingTab {
 						this.plugin.settings.taskFolderName = value;
 						await this.plugin.saveSettings();
 					});
+			});
+
+		new Setting(containerEl)
+			.setName("Project coloring")
+			.setDesc("Colors for projects in the calendar")
+			.addButton((btn) => {
+				btn.setIcon("palette");
+				btn.onClick((evt) => {
+					new ProjectColorModal(this.plugin).open();
+				});
 			});
 	}
 }

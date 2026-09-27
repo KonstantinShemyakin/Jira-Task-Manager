@@ -1,6 +1,6 @@
 {
-	"id": "jira-compass-plugin",
-	"name": "Jira Task Management",
+	"id": "jira-task-manager-plugin",
+	"name": "Jira Task Manager",
 	"version": "0.0.1",
 	"minAppVersion": "1.13.7",
 	"description": "Obsidian plugin for manaing incoming tasks from Atlassian Jira platform",

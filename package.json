@@ -1,12 +1,13 @@
 {
 	"name": "JTM",
 	"version": "0.0.1",
-	"description": "Obsidian plugin for manaing incoming tasks from Atlassian Jira platform",
+	"description": "Obsidian plugin for managing incoming tasks from Atlassian Jira platform",
 	"main": "main.js",
 	"type": "module",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"bundle": "node bundle-version.mjs",
 		"version": "node version-bump.mjs && git add manifest.json versions.json",
 		"lint": "eslint ."
 	},
