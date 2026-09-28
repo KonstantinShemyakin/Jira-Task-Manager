@@ -1,7 +1,7 @@
 {
 	"id": "jira-task-manager-plugin",
 	"name": "Jira Task Manager",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"minAppVersion": "1.13.7",
 	"description": "Obsidian plugin for manaing incoming tasks from Atlassian Jira platform",
 	"author": "kshemyakin",
