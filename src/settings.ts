@@ -98,7 +98,7 @@ export class JTMSetingsTab extends PluginSettingTab {
 					});
 			});
 
-		new Setting(containerEl)
+		/*new Setting(containerEl)
 			.setName("Project coloring")
 			.setDesc("Colors for projects in the calendar")
 			.addButton((btn) => {
@@ -106,6 +106,6 @@ export class JTMSetingsTab extends PluginSettingTab {
 				btn.onClick((evt) => {
 					new ProjectColorModal(this.plugin).open();
 				});
-			});
+			});*/
 	}
 }
