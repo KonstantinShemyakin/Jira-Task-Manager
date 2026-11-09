@@ -76,7 +76,7 @@ export class CreateTaskModal extends Modal {
 			.setName("Description")
 			.addTextArea((txtArea) => {
 				txtArea.onChange((value) => {
-					this.task.descrition = value;
+					this.task.description = value;
 				});
 			});
 
@@ -117,7 +117,7 @@ export class CreateTaskModal extends Modal {
 		let fileContent: string = this.task.title;
 
 		fileContent += "\nDescription: ";
-		fileContent += this.task.descrition;
+		fileContent += this.task.description;
 		fileContent += "\nStart date: ";
 		fileContent += this.task.startDate;
 		fileContent += "\nDue date: ";

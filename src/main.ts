@@ -61,7 +61,7 @@ export class TaskInfo {
 	taskNumber: number;
 	
 	title: string;
-	descrition: string;
+	description: string;
 
 	startDate: string;
 	dueDate: string;
@@ -70,9 +70,9 @@ export class TaskInfo {
 
 	constructor() {
 		this.project = "";
-		this.taskNumber = 0;
+		this.taskNumber = -1;
 		this.title = "";
-		this.descrition = "";
+		this.description = "";
 		this.startDate = "";
 		this.dueDate = "";
 		this.status = "";
