@@ -17,12 +17,14 @@ export class TaskModal extends Modal {
             this.task = new TaskInfo();
         this.createFolder = false; // In case of modification set as the current state of the task(in out folder)
 
-        new Setting(this.contentEl)
+        var taskSetting = new Setting(this.contentEl)
             .setName("Task")
             .addComponent((container) => {
                 return new TaskInputComponent(container, this.plugin.settings.projects)
                                 .setTaskInfo(this.task);
             });
+        if (task?.taskNumber != -1)
+            taskSetting.setDisabled(true);
                 
         new Setting(this.contentEl)
             .setName("Title")
@@ -123,6 +125,24 @@ export class TaskModal extends Modal {
             vaultManager.create(taskCalendarFileName, "").then(appendTask);
         else
             appendTask(taskCalendarFile);
+    }
+}
+
+export class ModifyTaskModal extends Modal {
+    plugin: JTMPlugin;
+    task: TaskInfo;
+    
+    constructor(plugin: JTMPlugin) {
+        super(plugin.app);
+
+        this.plugin = plugin;
+        this.task = new TaskInfo();
+        new Setting(this.contentEl)
+            .setName("Task")
+            .addComponent((container) => {
+                return new TaskInputComponent(container, this.plugin.settings.projects)
+                                .setTaskInfo(this.task);
+            });
     }
 }
 

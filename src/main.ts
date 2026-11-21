@@ -57,6 +57,8 @@ export default class JTMPlugin extends Plugin {
 }
 
 export class TaskInfo {
+	file?: TFile;
+	
 	project: string;
 	taskNumber: number;
 	
@@ -76,5 +78,55 @@ export class TaskInfo {
 		this.startDate = "";
 		this.dueDate = "";
 		this.status = "";
+		this.file = undefined;
+	}
+
+	static parseFromFile(file: TFile) : TaskInfo {
+        var parsedInfo = new TaskInfo();
+		parsedInfo.file = file;
+		var nameComponents = file.name.split("-");
+		parsedInfo.project = nameComponents[0] != undefined ? nameComponents[0] : parsedInfo.project;
+		var numberComponent = nameComponents[1] != undefined ? nameComponents[1].split(".")[0] : undefined;
+		parsedInfo.taskNumber = numberComponent != undefined ? Number.parseInt(numberComponent) : parsedInfo.taskNumber;
+        file.vault.read(file).then((value) => {
+            var fileProps = value.split("---")[1];
+			if (fileProps == undefined)
+				return;
+			for (var prop of fileProps.split("\n")) {
+				var propComponents = prop.split(": ");
+				switch(propComponents[0]?.trim()) {
+					case "title":
+						parsedInfo.title = propComponents[1] != undefined ? propComponents[1].trim() : parsedInfo.title; 
+						break;
+					case "description":
+						parsedInfo.description = propComponents[1] != undefined ? propComponents[1].trim() : parsedInfo.description;
+						break;
+					case "start date":
+						parsedInfo.startDate = propComponents[1] != undefined ? propComponents[1].trim() : parsedInfo.startDate;
+						break;
+					case "due date":
+						parsedInfo.dueDate = propComponents[1] != undefined ? propComponents[1].trim() : parsedInfo.dueDate;
+						break;
+					case "status":
+						parsedInfo.status = propComponents[1] != undefined ? propComponents[1].trim() : parsedInfo.status;
+						break;
+				}
+			}
+        });
+		return parsedInfo;
+    }
+
+	toFileProps() : string {
+		var props = "";
+		props += this.title.length != 0 ? "title: " + this.title + "\n" : "";
+		props += this.description.length != 0 ? "description: " + this.description + "\n" : "";
+		props += this.startDate.length != 0 ? "start date: " + this.startDate + "\n" : "";
+		props += this.dueDate.length != 0 ? "due date: " + this.dueDate + "\n" : "";
+		props += this.status.length != 0 ? "status: " + this.status + "\n" : "";
+		return props;
+	}
+
+	getFullTaskName() : string {
+		return this.project + "-" + this.taskNumber.toString();
 	}
 }

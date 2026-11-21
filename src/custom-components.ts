@@ -1,5 +1,6 @@
 import { BaseComponent } from "obsidian";
-import { TaskInfo } from "./main";
+import JTMPlugin, { TaskInfo } from "./main";
+import { TaskDataBase } from "./taskdb";
 
 export class TaskInputComponent extends BaseComponent {
     projectSelect: HTMLSelectElement;
@@ -40,7 +41,64 @@ export class TaskInputComponent extends BaseComponent {
     }
 }
 
-export class DatesPickerComponent extends BaseComponent{
+export class TaskChooseComponent extends BaseComponent {
+    projectSelect: HTMLSelectElement;
+    numberChoice: HTMLSelectElement;
+    container: HTMLElement;
+    plugin: JTMPlugin;
+
+    constructor(container: HTMLElement, projects: string[], plugin: JTMPlugin) {
+        super();
+
+        this.container = container;
+        this.plugin = plugin;
+        this.projectSelect = container.createEl("select");
+        for (let project of projects) {
+            let projectOption = this.projectSelect.createEl("option");
+            projectOption.setAttribute("value", project);
+            projectOption.innerText = project;
+        }
+
+        container.createSpan().innerText = " - ";
+        
+        this.numberChoice = container.createEl("select");
+        this.constructNumberChoice(this.projectSelect.value);
+    }
+
+    setTaskInfo(info: TaskInfo): TaskChooseComponent {
+        this.projectSelect.addEventListener("change", (ev) => {
+            if (ev.type != "change")
+                return;
+
+            info.project = this.projectSelect.value;
+            this.constructNumberChoice(this.projectSelect.value);
+        });
+
+        this.numberChoice.addEventListener("change", (ev) => {
+            if (ev.type != "change")
+                return;
+
+            info.taskNumber = Number.parseInt(this.numberChoice.value);
+        });
+
+        return this;
+    }
+
+    constructNumberChoice(project: string) {
+        var taskNumbers = TaskDataBase.getTaskNumbersForProject(this.plugin, project);
+
+        for (let child of this.numberChoice.children)
+            this.numberChoice.removeChild(child);
+
+        for (let taskNumber of taskNumbers) {
+            let numberOption = this.numberChoice.createEl("option");
+            numberOption.setAttribute("value", taskNumber.toString());
+            numberOption.innerText = taskNumber.toString();
+        }
+    }
+}
+
+export class DatesPickerComponent extends BaseComponent {
     startDateInput: HTMLInputElement;
     dueDateInput: HTMLInputElement;
 
