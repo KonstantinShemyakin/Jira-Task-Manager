@@ -6,6 +6,7 @@ export class TaskModal extends Modal {
     plugin: JTMPlugin;
     task: TaskInfo;
     createFolder: boolean;
+    modifyMode: boolean;
 
     constructor(plugin: JTMPlugin, task?: TaskInfo) {
         super(plugin.app);
@@ -15,16 +16,16 @@ export class TaskModal extends Modal {
             this.task = task;
         else
             this.task = new TaskInfo();
-        this.createFolder = false; // In case of modification set as the current state of the task(in out folder)
+        this.createFolder = false;
+        this.modifyMode = this.task.file != undefined;
 
         var taskSetting = new Setting(this.contentEl)
             .setName("Task")
             .addComponent((container) => {
                 return new TaskInputComponent(container, this.plugin.settings.projects)
                                 .setTaskInfo(this.task);
-            });
-        if (task?.taskNumber != -1)
-            taskSetting.setDisabled(true);
+            })
+            .setDisabled(this.modifyMode);
                 
         new Setting(this.contentEl)
             .setName("Title")
@@ -59,18 +60,20 @@ export class TaskModal extends Modal {
                 });
             });
         
-        new Setting(this.contentEl)
-            .setName("Create separate folder")
-            .addToggle((toggle) => {
-                toggle.onChange((value) => {
-                    this.createFolder = value;
+        if (!this.modifyMode) {
+            new Setting(this.contentEl)
+                .setName("Create separate folder")
+                .addToggle((toggle) => {
+                    toggle.onChange((value) => {
+                        this.createFolder = value;
+                    });
                 });
-            });
+        }
         
         new Setting(this.contentEl)
             .addButton((btn) => {
                 btn
-                    .setButtonText("Create")
+                    .setButtonText(this.modifyMode ? "Modify" : "Create")
                     .setCta()
                     .onClick(() => {
                         this.onSubmit();

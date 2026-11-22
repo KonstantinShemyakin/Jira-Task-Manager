@@ -126,6 +126,13 @@ export class TaskInfo {
 		return props;
 	}
 
+	toCalendarRecord() : string {
+		var taskName = this.getFullTaskName();
+		return this.startDate + "/" + this.dueDate 
+					+ ": [" + taskName + "](https://helpdesk.compassluxe.com/browse/" + taskName + ") " 
+					+ this.title;
+	}
+
 	getFullTaskName() : string {
 		return this.project + "-" + this.taskNumber.toString();
 	}
