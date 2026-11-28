@@ -137,6 +137,49 @@ export class TaskCalendar {
     static deleteTask(plugin: JTMPlugin, task: TaskInfo) {
         var vaulManager = plugin.app.vault;
         
-        this.getCalendarFile(plugin, this.getCalendarFileName(plugin)).then();
+        this.getCalendarFile(plugin, this.getCalendarFileName(plugin)).then(
+            (fileValue) => {
+                vaulManager.read(fileValue).then(
+                    (bodyValue) => {
+                        var taskLine = this.findTaskLine(bodyValue, task);
+                        
+                        if (taskLine == -1)
+                            return;
+
+                        var calendarLines = bodyValue.split("\n");
+                        var toDelete = calendarLines[taskLine];
+                        if (toDelete != undefined)
+                            calendarLines.remove(toDelete);
+                        vaulManager.modify(fileValue, calendarLines.join("\n"));
+                    });
+            });
+    }
+
+    static createSection(name: string) {
+        
+    }
+
+    static deleteSection(name: string) {
+
+    }
+
+    static getSectionedCalendar(plugin: JTMPlugin) : Promise<Map<string, string>> {
+        var vaulManager = plugin.app.vault;
+
+        return this.getCalendarFile(plugin, this.getCalendarFileName(plugin))
+            .then(fileValue => vaulManager.read(fileValue))
+            .then(bodyValue => {
+                var sectionMap = new Map<string, string>();
+
+                for (var line of bodyValue.split("\n")) {
+
+                }
+
+                return sectionMap;
+            });
+    }
+
+    static writeSectionsToCalendar() {
+
     }
 }
